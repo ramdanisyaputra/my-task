@@ -1,9 +1,19 @@
 import React from "react";
+import PropTypes from "prop-types";
+import "../styles/Button.css";
 
-const Button = () => {
+const Button = ({variant ,text, action}) => {
     return (
-        <button>Click</button>
+        <button className={`btn btn-${variant}`} onClick={action}>
+            {text}
+        </button>
     )
+}
+
+Button.propTypes = {
+    text: PropTypes.string.isRequired,
+    variant: PropTypes.string.isRequired,
+    action: PropTypes.func
 }
 
 export default Button;

@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "./Button";
 import "../styles/EditModal.css"
+import PropTypes from 'prop-types';
 
 class EditModal extends React.Component {
     
@@ -26,5 +27,13 @@ class EditModal extends React.Component {
         }
     }
 }
+
+EditModal.propTypes = {
+    edit: PropTypes.bool.isRequired,
+    close: PropTypes.func.isRequired,
+    data: PropTypes.object.isRequired,
+    change: PropTypes.func.isRequired,
+    update: PropTypes.func.isRequired,
+};
 
 export default EditModal

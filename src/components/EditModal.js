@@ -3,28 +3,24 @@ import Button from "./Button";
 import "../styles/EditModal.css"
 import PropTypes from 'prop-types';
 
-class EditModal extends React.Component {
-    
-    render(){
-        const { edit, close, data, change, update } = this.props;
-        if(edit){
-            return(
-                <div className="modal-container">
-                    <div className="modal-box">
-                        <h3>Edit Task</h3>
-                        <div className="input">
-                            <input type="text" value={data.title} onChange={change}/>
-                        </div>
-                        <div className="btn-group">
-                            <Button text="ok" variant="primary" action={update}/>
-                            <Button text="cancel" variant="warning" action={close}/>
-                        </div>
+const EditModal = ({ edit, close, data, change, update }) => {
+    if(edit){
+        return(
+            <div className="modal-container">
+                <div className="modal-box">
+                    <h3>Edit Task</h3>
+                    <div className="input">
+                        <input type="text" value={data.title} onChange={change}/>
                     </div>
+                    <div className="btn-group">
+                        <Button text="ok" variant="primary" action={update}/>
+                        <Button text="cancel" variant="warning" action={close}/>
+                    </div> 
                 </div>
-            )
-        } else {
-            return null;
-        }
+            </div>
+        )
+    } else {
+        return null;
     }
 }
 

@@ -1,41 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "./Button";
 import "../styles/FormInput.css"
 import PropTypes from 'prop-types';
 
-class FormInput extends React.Component {
-    state = {
-        text: ""
-    }
-
-    change = e => {
-        this.setState({ text: e.target.value })
+const FormInput = ({add}) => {
+    const [text, setText] = useState("");
+   
+    const change = e => {
+        setText(e.target.value);
     }
     
-    submit = e => {
+    const submit = e => {
         e.preventDefault();
-        if(this.state.text !== ""){
-            this.props.add(this.state.text)
+        if(text !== ""){
+            add(text)
         }
-        this.setState({
-            text: ""
-        })
+        setText("");
     }
 
-    render(){
-        return (
-            <form style={inputForm} onSubmit={this.submit}>
-                <input 
-                    type="text"
-                    onChange={this.change}
-                    value={this.state.text}
-                    style={input}
-                    placeholder="Add Task"
-                />
-                <Button text="add" variant="primary" action={this.submit}/>
-            </form>
-        )
-    }
+    return (
+        <form style={inputForm} onSubmit={submit}>
+            <input 
+                type="text"
+                onChange={change}
+                value={text}
+                style={input}
+                placeholder="Add Task"
+            />
+            <Button text="add" variant="primary" action={submit}/>
+        </form>
+    )
+
 }
 FormInput.propTypes = {
     add: PropTypes.func.isRequired,

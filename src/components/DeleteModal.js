@@ -3,24 +3,21 @@ import Button from "./Button";
 import "../styles/EditModal.css";
 import PropTypes from 'prop-types';
 
-class DeleteModal extends React.Component {
-    render(){
-        const { isDelete, close, data, del } = this.props;
-        if(isDelete){
-            return(
-                <div className="modal-container">
-                    <div className="modal-box">
-                        <h3>Delete Task</h3>
-                        <div className="btn-group" style={{marginTop: '1rem'}}>
-                            <Button text="ok" variant="primary" action={ () => del(data.id) }/>
-                            <Button text="cancel" variant="warning" action={close}/>
-                        </div>
+const DeleteModal = ({ isDelete, close, data, del }) => {
+    if(isDelete){
+        return(
+            <div className="modal-container">
+                <div className="modal-box">
+                    <h3>Delete Task</h3>
+                    <div className="btn-group" style={{marginTop: '1rem'}}>
+                        <Button text="ok" variant="primary" action={ () => del(data.id) }/>
+                        <Button text="cancel" variant="warning" action={close}/>
                     </div>
                 </div>
-            )
-        }else{
-            return null;
-        }
+            </div>
+        )
+    }else{
+        return null;
     }
 }
 

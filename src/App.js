@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import FormInput from './components/FormInput';
 import TodoItem from './components/TodoItem';
 import EditModal from './components/EditModal';
@@ -6,141 +6,122 @@ import DeleteModal from './components/DeleteModal';
 import logo from './logo.svg';
 import './App.css';
 
-class App extends React.Component {
-  state = {
-    todos: [
-      {
-        id: 1,
-        title: "reading a book"
-      },
-      {
-        id: 2,
-        title: "workout training"
-      }
-    ],
-    isEdit: false,
-    isDelete: false,
-    editData: {
-      id: "",
-      title: "",
+const App = () => {
+  const [todos, setTodos] = useState([
+    {
+      id: 1,
+      title: "reading a book"
     },
-    deleteData: {
-      id: ""
+    {
+      id: 2,
+      title: "workout training"
     }
-  }
+  ]);
 
-  update = () => {
-    const {id, title} = this.state.editData
+  const [isEdit, setIsEdit] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
+  const [editData, setEditData] = useState({
+    id: "",
+    title: "",
+  });
+
+  const [deleteData, setDeleteData] = useState({
+    id: ""
+  })
+
+  const update = () => {
+    const {id, title} = editData
     const newData = {id, title}
-    const newTodos = this.state.todos
+    const newTodos = todos
     newTodos.splice((id-1), 1, newData)
-    this.setState({
-      todos: newTodos,
-      isEdit: false,
-      editData: {
-        id: "",
-        title: ""
-      }
+    setTodos(newTodos);
+    setIsEdit(false);
+    setEditData({
+      id: "",
+      title: ""
     })
   }
 
-  setTitle = e => {
-    this.setState({
-      editData: {
-        ...this.state.editData,
+  const setTitle = e => {
+    setEditData({
+        ...editData,
         title: e.target.value
-      }
     })
   }
 
-  openModal = (id, data) => {
-    this.setState({
-      isEdit: true,
-      editData: {
-        id,
-        title: data
-      }
+  const openModal = (id, data) => {
+    setIsEdit(true);
+    setEditData({
+      id,
+      title: data
     })
   }
 
-  closeModal = () => {
-    this.setState({
-      isEdit: false
-    })
+  const closeModal = () => {
+    setIsEdit(false);
   }
 
 
-  openModalDelete = (id) => {
-    this.setState({
-      isDelete: true,
-      deleteData: {
-        id
-      }
+  const openModalDelete = (id) => {
+    setIsDelete(true);
+    setDeleteData({
+      id
     })
   }
 
-  closeModalDelete = () => {
-    this.setState({
-      isDelete: false
-    })
+  const closeModalDelete = () => {
+    setIsDelete(false);
   }
 
-  deleteTask = id =>{
-    this.setState({
-      todos: this.state.todos.filter(item => item.id !== id),
-      isDelete: false
-    })
+  const deleteTask = id => {
+    setTodos(todos.filter(item => item.id !== id));
+    setIsDelete(false);
   }
 
-  addTask = data => {
-    const id = this.state.todos.length
+  const addTask = data => {
+    const id = todos.length
     const newData = {
       id: id + 1,
       title: data
     }
 
-    this.setState({
-      todos: [...this.state.todos, newData]
-    })
+    setTodos([...todos, newData])
   }
 
-  render(){
-    const { todos } = this.state;
-    return (
-      <div className="app">
-        <div className="logo">
-          <img src={logo} alt="logo"/>
-          <h3>Task List</h3>
-        </div>
-        <div className="list">
-          {todos.map(item => 
-            <TodoItem 
-              key={item.id} 
-              todo={item}
-              open={this.openModal}
-              openDelete={this.openModalDelete}
-            />
-          )}
-        </div>
-        <div className="input-form">
-          <FormInput add={this.addTask}/>
-        </div>
-        <EditModal 
-          edit={this.state.isEdit} 
-          close={this.closeModal} 
-          change={this.setTitle}
-          data = {this.state.editData}
-          update={this.update}
-        />
-        <DeleteModal 
-          isDelete={this.state.isDelete}
-          data={this.state.deleteData}
-          close={this.closeModalDelete}
-          del={this.deleteTask}
-        />
+  return (
+    <div className="app">
+      <div className="logo">
+        <img src={logo} alt="logo"/>
+        <h3>Task List</h3>
       </div>
-    );
-  }
+      <div className="list">
+        {todos.map(item => 
+          <TodoItem 
+            key={item.id} 
+            todo={item}
+            open={openModal}
+            openDelete={openModalDelete}
+          />
+        )}
+      </div>
+      <div className="input-form">
+        <FormInput add={addTask}/>
+      </div>
+      <EditModal 
+        edit={isEdit} 
+        close={closeModal} 
+        change={setTitle}
+        data = {editData}
+        update={update}
+      />
+      <DeleteModal 
+        isDelete={isDelete}
+        data={deleteData}
+        close={closeModalDelete}
+        del={deleteTask}
+      />
+    </div>
+  );
 }
 
 export default App;

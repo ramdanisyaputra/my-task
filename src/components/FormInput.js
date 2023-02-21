@@ -1,40 +1,35 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import Button from "./Button";
 import "../styles/FormInput.css"
-import PropTypes from 'prop-types';
+import { add } from "../store/actions/lists";
 
-const FormInput = ({add}) => {
+const FormInput = () => {
     const [text, setText] = useState("");
-   
-    const change = e => {
-        setText(e.target.value);
+    const dispatch = useDispatch()
+    const handleChange = e => {
+        setText(e.target.value)
     }
     
-    const submit = e => {
-        e.preventDefault();
-        if(text !== ""){
-            add(text)
-        }
-        setText("");
+    const submit = (e) => {
+        e.preventDefault()
+        dispatch(add(text))
+        setText("")
     }
 
     return (
         <form style={inputForm} onSubmit={submit}>
             <input 
                 type="text"
-                onChange={change}
+                onChange={handleChange}
                 value={text}
                 style={input}
                 placeholder="Add Task"
             />
-            <Button text="add" variant="primary" action={submit}/>
+            <Button text="add" variant="primary"/>
         </form>
     )
-
 }
-FormInput.propTypes = {
-    add: PropTypes.func.isRequired,
-};
 
 export default FormInput;
 

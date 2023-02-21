@@ -1,22 +1,32 @@
 import React from "react";
-import PropTypes from "prop-types";
 import Button from "./Button";
+import { useSelector, useDispatch } from "react-redux";
+import { confirmation, edit } from "../store/actions/lists";
 
-const TodoItem = ({ todo, openDelete, open }) => {
+const TodoItem = () => {
+    const todos = useSelector(state => state.lists.todos);
+    const dispatch = useDispatch()
+    const openConfirmation = id => {
+        dispatch(confirmation(id))
+    }
+
+    const open = ( id, title ) => {
+        dispatch(edit(id, title))
+    }
+
     return (
-        <div style={todoItem}>
-            <p>{todo.title}</p>
-            <div>
-                <Button text="edit" variant="success" action={ () => open(todo.id, todo.title) } />
-                <Button text="delete" variant="warning" action={ () => openDelete(todo.id) }/>
-            </div>
+        <div>
+            {todos.map(item => 
+                <div style={todoItem} key={item.id}>
+                    <p>{item.title}</p>
+                    <div>
+                        <Button text="edit" variant="success" action={ () => open(item.id, item.title) }/>
+                        <Button text="delete" variant="warning" action={ () => openConfirmation(item.id) }/>
+                    </div>
+                </div>
+            )}
         </div>
     )
-}
-
-TodoItem.propTypes = {
-    todo: PropTypes.object.isRequired,
-    openDelete: PropTypes.func.isRequired,
 }
 
 export default TodoItem;
